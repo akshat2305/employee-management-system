@@ -1,10 +1,7 @@
 package com.akshat.employee_management_system.controller;
 
 import com.akshat.employee_management_system.entity.Employee;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,5 +53,12 @@ public class EmployeeController {
         }
 
         throw new RuntimeException("Employee not found");
+    }
+    @PostMapping
+    public Employee addEmployee(@RequestBody Employee employee) {
+
+        employees.add(employee);
+
+        return employee;
     }
 }
