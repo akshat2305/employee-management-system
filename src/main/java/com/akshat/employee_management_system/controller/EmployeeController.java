@@ -2,6 +2,7 @@ package com.akshat.employee_management_system.controller;
 
 import com.akshat.employee_management_system.entity.Employee;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,5 +43,18 @@ public class EmployeeController {
     @GetMapping
     public List<Employee> getAllEmployees() {
         return employees;
+    }
+    @GetMapping("/{id}")
+    public Employee getEmployeeById(@PathVariable int id) {
+
+        for (Employee employee : employees) {
+
+            if (employee.getId() == id) {
+                return employee;
+            }
+
+        }
+
+        throw new RuntimeException("Employee not found");
     }
 }
