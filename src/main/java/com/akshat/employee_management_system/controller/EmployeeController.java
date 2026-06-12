@@ -61,4 +61,37 @@ public class EmployeeController {
 
         return employee;
     }
+    @PutMapping("/{id}")
+    public Employee updateEmployee(@PathVariable int id,
+                                   @RequestBody Employee employee) {
+
+        for (Employee existingEmployee : employees) {
+
+            if (existingEmployee.getId() == id) {
+
+                existingEmployee.setName(employee.getName());
+                existingEmployee.setEmail(employee.getEmail());
+                existingEmployee.setDepartment(employee.getDepartment());
+
+                return existingEmployee;
+            }
+        }
+
+        return null;
+    }
+    @DeleteMapping("/{id}")
+    public void deleteEmployee(@PathVariable int id) {
+
+        Employee employeeToDelete = null;
+
+        for (Employee employee : employees) {
+
+            if (employee.getId() == id) {
+                employeeToDelete = employee;
+            }
+
+        }
+
+        employees.remove(employeeToDelete);
+    }
 }
