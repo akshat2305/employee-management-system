@@ -1,4 +1,5 @@
 package com.akshat.employee_management_system.service;
+import com.akshat.employee_management_system.exception.EmployeeNotFoundException;
 
 import com.akshat.employee_management_system.entity.Employee;
 import com.akshat.employee_management_system.repository.EmployeeRepository;
@@ -21,7 +22,7 @@ public class EmployeeService {
     public Employee getEmployeeById(int id) {
 
         return employeeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
+                .orElseThrow(() -> new EmployeeNotFoundException("Employee not found"));
     }
 
     public Employee addEmployee(Employee employee) {
