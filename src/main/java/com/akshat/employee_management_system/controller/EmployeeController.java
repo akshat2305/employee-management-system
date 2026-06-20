@@ -1,6 +1,7 @@
 package com.akshat.employee_management_system.controller;
 
 import com.akshat.employee_management_system.entity.Employee;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import com.akshat.employee_management_system.service.EmployeeService;
@@ -28,7 +29,7 @@ public class EmployeeController {
         }
 
     @PostMapping
-    public Employee addEmployee(@RequestBody Employee employee) {
+    public Employee addEmployee(@Valid @RequestBody Employee employee) {
 
         return employeeService.addEmployee(employee);
     }
