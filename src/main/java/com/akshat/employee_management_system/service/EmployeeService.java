@@ -1,4 +1,5 @@
 package com.akshat.employee_management_system.service;
+import com.akshat.employee_management_system.dto.EmployeeDTO;
 import com.akshat.employee_management_system.exception.EmployeeNotFoundException;
 
 import com.akshat.employee_management_system.entity.Employee;
@@ -19,10 +20,12 @@ public class EmployeeService {
         return employeeRepository.findAll();
     }
 
-    public Employee getEmployeeById(int id) {
+    public EmployeeDTO getEmployeeById(int id) {
 
-        return employeeRepository.findById(id)
+        Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new EmployeeNotFoundException("Employee not found"));
+
+        return convertToDTO(employee);
     }
 
     public Employee addEmployee(Employee employee) {
@@ -47,5 +50,16 @@ public class EmployeeService {
         employeeRepository.deleteById(id);
     }
 
+    private EmployeeDTO convertToDTO(Employee employee) {
+
+        EmployeeDTO dto = new EmployeeDTO();
+
+        dto.setId(employee.getId());
+        dto.setName(employee.getName());
+        dto.setEmail(employee.getEmail());
+        dto.setDepartment(employee.getDepartment());
+
+        return dto;
+    }
 
     }

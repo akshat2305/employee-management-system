@@ -1,5 +1,6 @@
 package com.akshat.employee_management_system.controller;
 
+import com.akshat.employee_management_system.dto.EmployeeDTO;
 import com.akshat.employee_management_system.entity.Employee;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Employee> getEmployeeById(@PathVariable int id) {
+    public ResponseEntity<EmployeeDTO> getEmployeeById(@PathVariable int id) {
 
         return ResponseEntity.ok(employeeService.getEmployeeById(id));
     }
