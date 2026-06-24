@@ -6,6 +6,7 @@ import com.akshat.employee_management_system.entity.Employee;
 import com.akshat.employee_management_system.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -16,8 +17,18 @@ public class EmployeeService {
         this.employeeRepository = employeeRepository;
     }
 
-    public List<Employee> getAllEmployees() {
-        return employeeRepository.findAll();
+    public List<EmployeeDTO> getAllEmployees() {
+
+        List<Employee> employees = employeeRepository.findAll();
+
+        List<EmployeeDTO> employeeDTOs = new ArrayList<>();
+
+        for (Employee employee : employees) {
+
+            employeeDTOs.add(convertToDTO(employee));
+        }
+
+        return employeeDTOs;
     }
 
     public EmployeeDTO getEmployeeById(int id) {
@@ -28,21 +39,25 @@ public class EmployeeService {
         return convertToDTO(employee);
     }
 
-    public Employee addEmployee(Employee employee) {
+    public EmployeeDTO addEmployee(Employee employee) {
 
-        return employeeRepository.save(employee);
+        Employee savedEmployee = employeeRepository.save(employee);
+
+        return convertToDTO(savedEmployee);
     }
 
-    public Employee updateEmployee(int id, Employee employee) {
+    public EmployeeDTO updateEmployee(int id, Employee employee) {
 
         Employee existingEmployee = employeeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
+                .orElseThrow(() -> new EmployeeNotFoundException("Employee not found"));
 
         existingEmployee.setName(employee.getName());
         existingEmployee.setEmail(employee.getEmail());
         existingEmployee.setDepartment(employee.getDepartment());
 
-        return employeeRepository.save(existingEmployee);
+        Employee updatedEmployee = employeeRepository.save(existingEmployee);
+
+        return convertToDTO(updatedEmployee);
     }
 
     public void deleteEmployee(int id) {
