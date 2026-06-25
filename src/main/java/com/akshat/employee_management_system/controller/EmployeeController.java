@@ -1,7 +1,7 @@
 package com.akshat.employee_management_system.controller;
 
-import com.akshat.employee_management_system.dto.EmployeeDTO;
-import com.akshat.employee_management_system.entity.Employee;
+import com.akshat.employee_management_system.dto.EmployeeRequestDTO;
+import com.akshat.employee_management_system.dto.EmployeeResponseDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,30 +21,30 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public ResponseEntity<List<EmployeeDTO>> getAllEmployees() {
+    public ResponseEntity<List<EmployeeResponseDTO>> getAllEmployees() {
 
         return ResponseEntity.ok(employeeService.getAllEmployees());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<EmployeeDTO> getEmployeeById(@PathVariable int id) {
+    public ResponseEntity<EmployeeResponseDTO> getEmployeeById(@PathVariable int id) {
 
         return ResponseEntity.ok(employeeService.getEmployeeById(id));
     }
 
     @PostMapping
-    public ResponseEntity<EmployeeDTO> addEmployee(
-            @Valid @RequestBody Employee employee) {
+    public ResponseEntity<EmployeeResponseDTO> addEmployee(
+            @Valid @RequestBody EmployeeRequestDTO request) {
 
-        return ResponseEntity.ok(employeeService.addEmployee(employee));
+        return ResponseEntity.ok(employeeService.addEmployee(request));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EmployeeDTO> updateEmployee(
+    public ResponseEntity<EmployeeResponseDTO> updateEmployee(
             @PathVariable int id,
-            @RequestBody Employee employee) {
+            @RequestBody @Valid EmployeeRequestDTO request) {
 
-        return ResponseEntity.ok(employeeService.updateEmployee(id, employee));
+        return ResponseEntity.ok(employeeService.updateEmployee(id, request));
     }
 
     @DeleteMapping("/{id}")

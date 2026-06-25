@@ -15,9 +15,10 @@ public class GlobalExceptionHandler {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(EmployeeNotFoundException.class)
-    public String handleEmployeeNotFoundException() {
+    public String handleEmployeeNotFoundException(
+            EmployeeNotFoundException ex) {
 
-        return "Employee not found";
+        return ex.getMessage();
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

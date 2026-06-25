@@ -1,5 +1,6 @@
 package com.akshat.employee_management_system.service;
-import com.akshat.employee_management_system.dto.EmployeeDTO;
+import com.akshat.employee_management_system.dto.EmployeeRequestDTO;
+import com.akshat.employee_management_system.dto.EmployeeResponseDTO;
 import com.akshat.employee_management_system.exception.EmployeeNotFoundException;
 
 import com.akshat.employee_management_system.entity.Employee;
@@ -17,47 +18,49 @@ public class EmployeeService {
         this.employeeRepository = employeeRepository;
     }
 
-    public List<EmployeeDTO> getAllEmployees() {
+    public List<EmployeeResponseDTO> getAllEmployees() {
 
         List<Employee> employees = employeeRepository.findAll();
 
-        List<EmployeeDTO> employeeDTOs = new ArrayList<>();
+        List<EmployeeResponseDTO> employeeResponseDTOS = new ArrayList<>();
 
         for (Employee employee : employees) {
 
-            employeeDTOs.add(convertToDTO(employee));
+            employeeResponseDTOS.add(convertToResponseDTO(employee));
         }
 
-        return employeeDTOs;
+        return employeeResponseDTOS;
     }
 
-    public EmployeeDTO getEmployeeById(int id) {
+    public EmployeeResponseDTO getEmployeeById(int id) {
 
         Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new EmployeeNotFoundException("Employee not found"));
 
-        return convertToDTO(employee);
+        return convertToResponseDTO(employee);
     }
 
-    public EmployeeDTO addEmployee(Employee employee) {
+    public EmployeeResponseDTO addEmployee(EmployeeRequestDTO request) {
+
+        Employee employee = convertToEntity(request);
 
         Employee savedEmployee = employeeRepository.save(employee);
 
-        return convertToDTO(savedEmployee);
+        return convertToResponseDTO(savedEmployee);
     }
 
-    public EmployeeDTO updateEmployee(int id, Employee employee) {
+    public EmployeeResponseDTO updateEmployee(int id, EmployeeRequestDTO request) {
 
         Employee existingEmployee = employeeRepository.findById(id)
                 .orElseThrow(() -> new EmployeeNotFoundException("Employee not found"));
 
-        existingEmployee.setName(employee.getName());
-        existingEmployee.setEmail(employee.getEmail());
-        existingEmployee.setDepartment(employee.getDepartment());
+        existingEmployee.setName(request.getName());
+        existingEmployee.setEmail(request.getEmail());
+        existingEmployee.setDepartment(request.getDepartment());
 
         Employee updatedEmployee = employeeRepository.save(existingEmployee);
 
-        return convertToDTO(updatedEmployee);
+        return convertToResponseDTO(updatedEmployee);
     }
 
     public void deleteEmployee(int id) {
@@ -65,9 +68,9 @@ public class EmployeeService {
         employeeRepository.deleteById(id);
     }
 
-    private EmployeeDTO convertToDTO(Employee employee) {
+    private EmployeeResponseDTO convertToResponseDTO(Employee employee) {
 
-        EmployeeDTO dto = new EmployeeDTO();
+        EmployeeResponseDTO dto = new EmployeeResponseDTO();
 
         dto.setId(employee.getId());
         dto.setName(employee.getName());
@@ -75,6 +78,17 @@ public class EmployeeService {
         dto.setDepartment(employee.getDepartment());
 
         return dto;
+    }
+
+    private Employee convertToEntity(EmployeeRequestDTO request) {
+
+        Employee employee = new Employee();
+
+        employee.setName(request.getName());
+        employee.setEmail(request.getEmail());
+        employee.setDepartment(request.getDepartment());
+
+        return employee;
     }
 
     }
