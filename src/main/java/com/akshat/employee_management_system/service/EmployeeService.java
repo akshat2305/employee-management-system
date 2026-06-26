@@ -7,7 +7,6 @@ import com.akshat.employee_management_system.entity.Employee;
 import com.akshat.employee_management_system.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,14 +21,9 @@ public class EmployeeService {
 
         List<Employee> employees = employeeRepository.findAll();
 
-        List<EmployeeResponseDTO> employeeResponseDTOS = new ArrayList<>();
-
-        for (Employee employee : employees) {
-
-            employeeResponseDTOS.add(convertToResponseDTO(employee));
-        }
-
-        return employeeResponseDTOS;
+        return employees.stream()
+                .map(this::convertToResponseDTO)
+                .toList();
     }
 
     public EmployeeResponseDTO getEmployeeById(int id) {
