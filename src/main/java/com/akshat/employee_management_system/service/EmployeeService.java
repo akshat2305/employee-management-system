@@ -26,6 +26,15 @@ public class EmployeeService {
                 .toList();
     }
 
+    public List<EmployeeResponseDTO> getEmployeesByDepartment(String department) {
+
+        List<Employee> employees = employeeRepository.findByDepartment(department);
+
+        return employees.stream()
+                .map(this::convertToResponseDTO)
+                .toList();
+    }
+
     public EmployeeResponseDTO getEmployeeById(int id) {
 
         Employee employee = employeeRepository.findById(id)
