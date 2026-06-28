@@ -1,4 +1,6 @@
 package com.akshat.employee_management_system.service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import com.akshat.employee_management_system.dto.EmployeeRequestDTO;
 import com.akshat.employee_management_system.dto.EmployeeResponseDTO;
 import com.akshat.employee_management_system.exception.EmployeeNotFoundException;
@@ -24,6 +26,13 @@ public class EmployeeService {
         return employees.stream()
                 .map(this::convertToResponseDTO)
                 .toList();
+    }
+
+    public Page<EmployeeResponseDTO> getAllEmployees(Pageable pageable) {
+
+        Page<Employee> employeePage = employeeRepository.findAll(pageable);
+
+        return employeePage.map(this::convertToResponseDTO);
     }
 
     public List<EmployeeResponseDTO> getEmployeesByDepartment(String department) {

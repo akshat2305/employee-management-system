@@ -1,5 +1,8 @@
 package com.akshat.employee_management_system.controller;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import com.akshat.employee_management_system.dto.EmployeeRequestDTO;
 import com.akshat.employee_management_system.dto.EmployeeResponseDTO;
 import jakarta.validation.Valid;
@@ -24,6 +27,19 @@ public class EmployeeController {
     public ResponseEntity<List<EmployeeResponseDTO>> getAllEmployees() {
 
         return ResponseEntity.ok(employeeService.getAllEmployees());
+    }
+
+    @GetMapping("/paginated")
+    public ResponseEntity<Page<EmployeeResponseDTO>> getAllEmployeesPaginated(
+
+            @RequestParam(defaultValue = "0") int page,
+
+            @RequestParam(defaultValue = "5") int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        return ResponseEntity.ok(
+                employeeService.getAllEmployees(pageable));
     }
 
     @GetMapping("/department/{department}")
