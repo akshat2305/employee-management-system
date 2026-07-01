@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import com.akshat.employee_management_system.dto.EmployeeRequestDTO;
 import com.akshat.employee_management_system.dto.EmployeeResponseDTO;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,9 +35,15 @@ public class EmployeeController {
 
             @RequestParam(defaultValue = "0") int page,
 
-            @RequestParam(defaultValue = "5") int size) {
+            @RequestParam(defaultValue = "5") int size,
 
-        Pageable pageable = PageRequest.of(page, size);
+            @RequestParam(defaultValue = "id") String sort) {
+
+        Pageable pageable = PageRequest.of(
+                page,
+                size,
+                Sort.by(sort)
+        );
 
         return ResponseEntity.ok(
                 employeeService.getAllEmployees(pageable));
