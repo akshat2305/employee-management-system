@@ -28,6 +28,16 @@ public class EmployeeService {
                 .toList();
     }
 
+    public List<EmployeeResponseDTO> searchEmployees(String keyword) {
+
+        List<Employee> employees =
+                employeeRepository.findByNameContainingIgnoreCase(keyword);
+
+        return employees.stream()
+                .map(this::convertToResponseDTO)
+                .toList();
+    }
+
     public Page<EmployeeResponseDTO> getAllEmployees(Pageable pageable) {
 
         Page<Employee> employeePage = employeeRepository.findAll(pageable);

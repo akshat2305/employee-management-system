@@ -63,6 +63,14 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.getEmployeeById(id));
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<EmployeeResponseDTO>> searchEmployees(
+            @RequestParam String keyword) {
+
+        return ResponseEntity.ok(
+                employeeService.searchEmployees(keyword));
+    }
+
     @PostMapping
     public ResponseEntity<EmployeeResponseDTO> addEmployee(
             @Valid @RequestBody EmployeeRequestDTO request) {
