@@ -7,6 +7,8 @@ import com.akshat.employee_management_system.exception.EmployeeNotFoundException
 
 import com.akshat.employee_management_system.entity.Employee;
 import com.akshat.employee_management_system.repository.EmployeeRepository;
+import com.akshat.employee_management_system.specification.EmployeeSpecification;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -52,6 +54,17 @@ public class EmployeeService {
         return employees.stream()
                 .map(this::convertToResponseDTO)
                 .toList();
+    }
+
+    public Page<EmployeeResponseDTO> filterEmployees(
+            String department, String name, String email, Pageable pageable) {
+
+        Specification<Employee> spec =
+                EmployeeSpecification.filterBy(department, name, email);
+
+        Page<Employee> employeePage = employeeRepository.findAll(spec, pageable);
+
+        return employeePage.map(this::convertToResponseDTO);
     }
 
     public EmployeeResponseDTO getEmployeeById(int id) {
@@ -113,4 +126,4 @@ public class EmployeeService {
         return employee;
     }
 
-    }
+}

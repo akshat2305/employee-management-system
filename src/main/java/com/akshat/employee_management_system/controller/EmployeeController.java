@@ -86,6 +86,29 @@ public class EmployeeController {
     }
 
     @Operation(
+            summary = "Dynamically filter employees",
+            description = "Filters employees by any combination of department, name, and email, with pagination and sorting. All parameters are optional."
+    )
+    @GetMapping("/filter")
+    public ResponseEntity<Page<EmployeeResponseDTO>> filterEmployees(
+            @RequestParam(required = false) String department,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String email,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "id") String sort) {
+
+        Pageable pageable = PageRequest.of(
+                page,
+                size,
+                Sort.by(sort)
+        );
+
+        return ResponseEntity.ok(
+                employeeService.filterEmployees(department, name, email, pageable));
+    }
+
+    @Operation(
             summary = "Search employees",
             description = "Searches employees by name using a case-insensitive keyword."
     )
@@ -131,4 +154,4 @@ public class EmployeeController {
 
         return ResponseEntity.noContent().build();
     }
-    }
+}
